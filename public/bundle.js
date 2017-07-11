@@ -11247,9 +11247,30 @@ var _reducers = __webpack_require__(226);
 
 var _reducers2 = _interopRequireDefault(_reducers);
 
+var _booksActions = __webpack_require__(228);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var createStoreWithMiddleware = (0, _redux.applyMiddleware)()(_redux.createStore);
+
+//create the store
+var store = (0, _redux.createStore)(_reducers2.default);
+store.subscribe(function () {
+  console.log('current state is: ', store.getState());
+});
+
+//dispatch example actions
+
+var exampleBook = {
+  id: 1,
+  title: 'this is the book title',
+  description: 'this is the book description',
+  price: 33.33
+};
+store.dispatch((0, _booksActions.postBook)(exampleBook));
+store.dispatch((0, _booksActions.postBook)(exampleBook));
+store.dispatch((0, _booksActions.postBook)(exampleBook));
+store.dispatch((0, _booksActions.postBook)(exampleBook));
 
 _reactDom2.default.render(_react2.default.createElement(
   _reactRedux.Provider,
@@ -24784,15 +24805,57 @@ Object.defineProperty(exports, "__esModule", {
 
 var _redux = __webpack_require__(52);
 
-var rootReducer = (0, _redux.combineReducers)({
-  state: function state() {
-    var _state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+var _booksReducers = __webpack_require__(227);
 
-    return _state;
-  }
+var rootReducer = (0, _redux.combineReducers)({
+  books: _booksReducers.booksReducers
 });
 
 exports.default = rootReducer;
+
+/***/ }),
+/* 227 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.booksReducers = booksReducers;
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function booksReducers() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+  var action = arguments[1];
+
+  switch (action.type) {
+    case "POST_BOOK":
+      return [].concat(_toConsumableArray(state), [action.payload]);
+      break;
+  }
+  return state;
+}
+
+/***/ }),
+/* 228 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.postBook = postBook;
+function postBook(book) {
+  return {
+    type: "POST_BOOK",
+    payload: book
+  };
+}
 
 /***/ })
 /******/ ]);

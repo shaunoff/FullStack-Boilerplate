@@ -1,7 +1,9 @@
 import { combineReducers } from 'redux';
+import {booksReducers} from './booksReducers'
+
 
 const rootReducer = combineReducers({
-  state: (state = {}) => state
+  books: booksReducers
 });
 
 export default rootReducer;
