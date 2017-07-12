@@ -1,6 +1,6 @@
-export function postBook(book){
+export function addBook(book){
   return {
-    type: "POST_BOOK",
+    type: "ADD_BOOK",
     payload: book
   }
 }
