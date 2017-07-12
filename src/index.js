@@ -5,9 +5,11 @@ import { createStore, applyMiddleware } from 'redux';
 import logger from 'redux-logger'
 import {BrowserRouter,Route, Switch} from 'react-router-dom'
 
-import App from './components/app';
+//import App from './components/app';
 import BooksList from "./components/BooksList"
 import ActiveBook from "./components/ActiveBook"
+import ReduxForm from "./components/ReduxForm"
+
 import NavigationBar from "./components/navbar/NavBar.js"
 import rootReducer from './reducers/index.js';
 
@@ -23,6 +25,7 @@ ReactDOM.render(
         <Switch>
           <Route exact path="/" component={BooksList}/>
           <Route path="/active" component={ActiveBook}/>
+          <Route path="/form" component={ReduxForm}/>
         </Switch>
       </div>
     </BrowserRouter>

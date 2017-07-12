@@ -17,7 +17,9 @@ export default class NavigationBar extends Component{
           <LinkContainer to={"/active"}>
             <NavItem >Active Book Title</NavItem>
           </LinkContainer>
-          
+          <LinkContainer to={"/form"}>
+            <NavItem >Redux Form</NavItem>
+          </LinkContainer>
         </Nav>
       </Navbar>
     )
