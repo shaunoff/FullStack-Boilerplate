@@ -11,3 +11,10 @@ export function removeBook(){
     type: "REMOVE_BOOK"
   }
 };
+
+export function activateBook(title){
+  return {
+    type: "ACTIVATE_BOOK",
+    payload: title
+  }
+};

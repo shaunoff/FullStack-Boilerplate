@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux'
-import {addBook,removeBook} from '../actions/index.js'
+import {addBook,removeBook,activateBook} from '../actions/index.js'
 import {bindActionCreators} from 'redux'
 
 
 class BooksList extends Component {
   renderBooksList(){
-    console.log(this.props)
+
     return (
       this.props.books.map((book,index)=>{
-        return <p key={index}>{book.title}</p>
+        const active = book.title == this.props.activeBook.title
+        return <p style={{backgroundColor: active ? "green": "white"}} onClick={()=>{this.props.activateBook(book.title)}} key={index}>{book.title}</p>
       })
     )
   }
@@ -26,11 +27,12 @@ class BooksList extends Component {
 
 function mapStateToProps(state){
   return {
-    books: state.books
+    books: state.books,
+    activeBook: state.activeBook
   }
 }
 function mapDispatchToProps(dispatch){
-  return bindActionCreators({addBook,removeBook},dispatch)
+  return bindActionCreators({addBook,removeBook,activateBook},dispatch)
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(BooksList)
