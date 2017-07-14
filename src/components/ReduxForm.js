@@ -1,31 +1,43 @@
 import React, { Component } from 'react';
 import {Field,reduxForm} from 'redux-form'
+import {connect} from 'react-redux'
 import {Grid, Row, Col,Button,ButtonToolbar,Panel} from 'react-bootstrap'
+import {addFormData} from '../actions/index.js'
+
 
 class ReduxForm extends Component {
-  constructor(){
-    super()
-    this.state = {
-      values: ""
-    }
-  }
-  renderField(field){
-    return (
-      <div className="form-group">
-        <label>{field.label}</label>
-        <input
-          className="form-control"
-          type="text"
-          {...field.input}
-        />
 
+  renderField(field) {
+    const { meta: { touched, error } } = field;
+    const className = `form-group ${touched && error ? "has-error" : ""}`;
+
+    return (
+      <div className={className}>
+        <label>{field.label}</label>
+        <input className="form-control" type="text" {...field.input} />
+        <div className="text-help" style={{color: "red"}}>
+          {touched ? error : ""}
+        </div>
       </div>
+    );
+  }
+  renderFormData(){
+    return (
+      this.props.formData.map((form)=>{
+        return (
+          <Panel header={form.title} bsStyle="primary">
+            <p>{form.field2}</p>
+            <p>{form.field3}</p>
+          </Panel>)
+      })
     )
   }
   onSubmit(values){
-    this.setState({values: values})
+    this.props.addFormData(values)
+    this.props.reset()
   }
   render() {
+    console.log(this.props.formData)
     const {handleSubmit} = this.props
     return (
       <Grid>
@@ -54,7 +66,7 @@ class ReduxForm extends Component {
           </Col>
           <Col lg={6}>
             <Panel header="Output">
-              {JSON.stringify(this.state.values)}
+              {this.renderFormData()}
             </Panel>
           </Col>
         </Row>
@@ -69,14 +81,20 @@ function validate(values){
     error.title = "Enter a Title"
   }
   if (!values.field2){
-    error.title = "Enter value into field 2"
+    error.field2 = "Enter value into field 2"
   }
   if (!values.field3){
-    error.title = "Enter value into field 3"
+    error.field3 = "Enter value into field 3"
+  }
+  return error
+}
+function mapStateToProps(state){
+  return {
+    formData: state.formData
   }
 }
 
 export default reduxForm({
   form: 'ReduxExample',
   validate: validate
-})(ReduxForm)
+})(connect(mapStateToProps, { addFormData })(ReduxForm))

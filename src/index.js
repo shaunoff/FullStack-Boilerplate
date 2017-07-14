@@ -9,6 +9,7 @@ import {BrowserRouter,Route, Switch} from 'react-router-dom'
 import BooksList from "./components/BooksList"
 import ActiveBook from "./components/ActiveBook"
 import ReduxForm from "./components/ReduxForm"
+import ApiTest from "./components/pages/ApiTest"
 
 import NavigationBar from "./components/navbar/NavBar.js"
 import rootReducer from './reducers/index.js';
@@ -26,6 +27,7 @@ ReactDOM.render(
           <Route exact path="/" component={BooksList}/>
           <Route path="/active" component={ActiveBook}/>
           <Route path="/form" component={ReduxForm}/>
+          <Route path="/api-test" component={ApiTest}/>
         </Switch>
       </div>
     </BrowserRouter>

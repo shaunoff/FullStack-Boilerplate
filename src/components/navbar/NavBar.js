@@ -20,6 +20,9 @@ export default class NavigationBar extends Component{
           <LinkContainer to={"/form"}>
             <NavItem >Redux Form</NavItem>
           </LinkContainer>
+          <LinkContainer to={"/api-test"}>
+            <NavItem >Non-redux Api</NavItem>
+          </LinkContainer>
         </Nav>
       </Navbar>
     )

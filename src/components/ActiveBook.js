@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux'
 import {Grid,Row,Col,Panel} from 'react-bootstrap'
+
 class ActiveBook extends Component{
   render(){
     const {activeBook={}} = this.props
@@ -23,4 +24,5 @@ function mapStateToProps(state){
     activeBook: state.activeBook
   }
 }
-export default connect(mapStateToProps)(ActiveBook)
+
+export default connect(mapStateToProps)(ActiveBook);

@@ -18,3 +18,9 @@ export function activateBook(title){
     payload: title
   }
 };
+export function addFormData(data){
+  return {
+    type: "ADD_FORM_DATA",
+    payload: data
+  }
+};
