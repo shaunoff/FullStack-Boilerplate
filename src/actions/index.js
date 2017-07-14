@@ -51,7 +51,7 @@ export function addTodo(text){
       return axios.get('http://localhost:3009/todos')
     })
   return {
-    type: "DELETE_TODO",
+    type: "ADD_TODO",
     payload: request
   }
 };

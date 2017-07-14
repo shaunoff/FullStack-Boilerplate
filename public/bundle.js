@@ -10857,7 +10857,7 @@ function addTodo(text) {
     return _axios2.default.get('http://localhost:3009/todos');
   });
   return {
-    type: "DELETE_TODO",
+    type: "ADD_TODO",
     payload: request
   };
 };
@@ -59612,11 +59612,15 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
+
+var _reduxForm = __webpack_require__(276);
 
 var _reactBootstrap = __webpack_require__(68);
 
@@ -59668,6 +59672,37 @@ var ReduxApi = function (_Component) {
       this.props.addTodo({ text: Date.now() });
     }
   }, {
+    key: 'onSubmit',
+    value: function onSubmit(values) {
+      this.props.addTodo(values);
+      this.props.reset();
+    }
+  }, {
+    key: 'renderField',
+    value: function renderField(field) {
+      var _field$meta = field.meta,
+          touched = _field$meta.touched,
+          error = _field$meta.error;
+
+      var className = 'form-group ' + (touched && error ? "has-error" : "");
+
+      return _react2.default.createElement(
+        'div',
+        { className: className },
+        _react2.default.createElement(
+          'label',
+          null,
+          field.label
+        ),
+        _react2.default.createElement('input', _extends({ className: 'form-control', type: 'text' }, field.input)),
+        _react2.default.createElement(
+          'div',
+          { className: 'text-help', style: { color: "red" } },
+          touched ? error : ""
+        )
+      );
+    }
+  }, {
     key: 'renderTodos',
     value: function renderTodos() {
       var _this2 = this;
@@ -59687,7 +59722,7 @@ var ReduxApi = function (_Component) {
             _react2.default.createElement(
               'div',
               { onClick: _this2.deleteTodo.bind(_this2, todo._id), className: 'btn-group pull-right' },
-              _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'remove' })
+              _react2.default.createElement(_reactBootstrap.Glyphicon, { glyph: 'trash' })
             )
           ),
           _react2.default.createElement(
@@ -59706,6 +59741,8 @@ var ReduxApi = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
+      var handleSubmit = this.props.handleSubmit;
+
       return _react2.default.createElement(
         _reactBootstrap.Grid,
         null,
@@ -59722,6 +59759,24 @@ var ReduxApi = function (_Component) {
                 _reactBootstrap.Button,
                 { onClick: this.addTodo.bind(this), bsStyle: 'success' },
                 'Add Todo'
+              )
+            ),
+            _react2.default.createElement(
+              _reactBootstrap.Panel,
+              { header: 'Redux Form' },
+              _react2.default.createElement(
+                'form',
+                { onSubmit: handleSubmit(this.onSubmit.bind(this)) },
+                _react2.default.createElement(_reduxForm.Field, {
+                  name: 'text',
+                  label: 'Title',
+                  component: this.renderField
+                }),
+                _react2.default.createElement(
+                  'button',
+                  { type: 'submit', className: 'btn btn-primary' },
+                  'Submit'
+                )
               )
             )
           ),
@@ -59750,8 +59805,18 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return (0, _redux.bindActionCreators)({ getTodos: _index.getTodos, deleteTodo: _index.deleteTodo, addTodo: _index.addTodo }, dispatch);
 }
+function validate(values) {
+  var error = {};
+  if (!values.text) {
+    error.text = "Enter a Title";
+  }
+  return error;
+}
 
-exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(ReduxApi);
+exports.default = (0, _reduxForm.reduxForm)({
+  form: 'ReduxApiExample',
+  validate: validate
+})((0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(ReduxApi));
 
 /***/ })
 /******/ ]);

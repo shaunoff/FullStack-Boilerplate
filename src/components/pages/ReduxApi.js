@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Field,reduxForm} from 'redux-form'
 import {Grid, Row, Col,Button,ButtonToolbar,Panel,Glyphicon} from 'react-bootstrap'
 import {connect} from 'react-redux'
 import {getTodos,deleteTodo,addTodo} from '../../actions/index.js'
@@ -18,6 +19,24 @@ class ReduxApi extends Component {
   addTodo(){
     this.props.addTodo({text: Date.now()})
   }
+  onSubmit(values){
+    this.props.addTodo(values)
+    this.props.reset()
+  }
+  renderField(field) {
+    const { meta: { touched, error } } = field;
+    const className = `form-group ${touched && error ? "has-error" : ""}`;
+
+    return (
+      <div className={className}>
+        <label>{field.label}</label>
+        <input className="form-control" type="text" {...field.input} />
+        <div className="text-help" style={{color: "red"}}>
+          {touched ? error : ""}
+        </div>
+      </div>
+    );
+  }
   renderTodos(){
     return (
       this.props.todos.map((todo)=>{
@@ -25,8 +44,8 @@ class ReduxApi extends Component {
           <div key={todo._id} className="panel panel-primary">
             <div className="panel-heading clearfix">
               <h2 className="panel-title pull-left" style={{paddingTop: '3px'}}>Panel header</h2>
-              <div onClick={this.deleteTodo.bind(this,todo._id)}className="btn-group pull-right">
-                <Glyphicon glyph="remove" />
+              <div onClick={this.deleteTodo.bind(this,todo._id)} className="btn-group pull-right">
+                <Glyphicon glyph="trash" />
               </div>
             </div>
             <p onClick={this.deleteTodo.bind(this,todo._id)}>{todo.text}</p>
@@ -36,12 +55,24 @@ class ReduxApi extends Component {
     )
   }
   render() {
+    const {handleSubmit} = this.props
     return (
       <Grid>
         <Row style={{marginBottom: '10px'}} className="show-grid">
           <Col lg={6}>
             <Panel header={"Add Todo"}>
               <Button onClick={this.addTodo.bind(this)} bsStyle="success">Add Todo</Button>
+            </Panel>
+            <Panel header="Redux Form">
+              <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+                <Field
+                  name='text'
+                  label="Title"
+                  component={this.renderField}
+                />
+
+                <button type="submit" className="btn btn-primary">Submit</button>
+              </form>
             </Panel>
           </Col>
           <Col lg={6}>
@@ -63,5 +94,15 @@ function mapStateToProps(state){
 function mapDispatchToProps(dispatch){
   return bindActionCreators({getTodos,deleteTodo,addTodo},dispatch)
 }
+function validate(values){
+  const error = {};
+  if (!values.text){
+    error.text = "Enter a Title"
+  }
+  return error
+}
 
-export default connect(mapStateToProps,mapDispatchToProps)(ReduxApi)
+export default reduxForm({
+  form: 'ReduxApiExample',
+  validate: validate
+})(connect(mapStateToProps,mapDispatchToProps)(ReduxApi))
