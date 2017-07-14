@@ -21,7 +21,10 @@ export default class NavigationBar extends Component{
             <NavItem >Redux Form</NavItem>
           </LinkContainer>
           <LinkContainer to={"/api-test"}>
-            <NavItem >Non-redux Api</NavItem>
+            <NavItem >Non-Redux Api</NavItem>
+          </LinkContainer>
+          <LinkContainer to={"/redux-api"}>
+            <NavItem >Redux Api</NavItem>
           </LinkContainer>
         </Nav>
       </Navbar>
